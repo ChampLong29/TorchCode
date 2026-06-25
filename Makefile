@@ -6,14 +6,38 @@ COMPOSE ?= $(shell \
 	else \
 		echo "docker compose"; \
 	fi)
+CONTAINER ?= $(shell \
+	if command -v docker >/dev/null 2>&1; then \
+		echo "docker"; \
+	elif command -v podman >/dev/null 2>&1; then \
+		echo "podman"; \
+	else \
+		echo "docker"; \
+	fi)
 
 .PHONY: run run-build stop clean setup-local badges
 
 run:
 	@echo "Using compose backend: $(COMPOSE)"
 	@echo "Pulling prebuilt image (if available)..."
-	@$(COMPOSE) pull || true
-	$(COMPOSE) up -d --no-build
+	@pull_status=0; \
+	images="$$( $(COMPOSE) config --images 2>/dev/null )"; \
+	$(COMPOSE) pull || pull_status=$$?; \
+	missing_images=""; \
+	for image in $$images; do \
+		if ! $(CONTAINER) image inspect "$$image" >/dev/null 2>&1; then \
+			missing_images="$$missing_images $$image"; \
+		fi; \
+	done; \
+	if [ -n "$$images" ] && [ -z "$$missing_images" ]; then \
+		if [ $$pull_status -ne 0 ]; then \
+			echo "Prebuilt image pull failed, but local compose images are available. Reusing them."; \
+		fi; \
+		$(COMPOSE) up -d --no-build; \
+	else \
+		echo "Prebuilt image unavailable for this platform. Building locally instead..."; \
+		$(COMPOSE) up --build -d; \
+	fi
 	@echo ""
 	@echo "🔥 TorchCode is running!"
 	@echo "   Open http://localhost:8888"

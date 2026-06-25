@@ -16,7 +16,7 @@ pinned: false
 
 Practice implementing operators and architectures from scratch — the exact skills top ML teams test for.
 
-*Like LeetCode, but for tensors. Self-hosted. Jupyter-based. Instant feedback.*
+*An interactive coding platform, but for tensors. Self-hosted. Jupyter-based. Instant feedback.*
 
 [![PyTorch](https://img.shields.io/badge/PyTorch-ee4c2c?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
 [![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white)](https://jupyter.org)
@@ -88,13 +88,36 @@ hint("relu")       # show a hint
 docker run -p 8888:8888 -e PORT=8888 ghcr.io/duoan/torchcode:latest
 ```
 
+If the registry image is unavailable for your platform, use Option 2 instead. This is the common path on Apple Silicon / `arm64`.
+
 ### Option 2 — Build locally
 
 ```bash
 make run
 ```
 
+`make run` will try the prebuilt image first and automatically fall back to a local build when needed.
+
 Open **<http://localhost:8888>** — that's it. Works with both Docker and Podman (auto-detected).
+
+### Option 3 — Standalone Web UI (Next.js + FastAPI)
+
+For a modern, standalone coding experience with an integrated IDE and dual-pane layout:
+
+1. **Start Backend (FastAPI):**
+   ```bash
+   pip install -r api/requirements.txt
+   python -m uvicorn api.main:app --port 8000 --reload
+   ```
+2. **Start Frontend (Next.js):**
+   ```bash
+   cd web
+   npm install
+   npm run dev
+   ```
+3. Open **<http://localhost:3000>** in your browser.
+
+![TorchCode UI Preview](assets/ui_preview.png)
 
 ---
 
@@ -337,6 +360,58 @@ The judge runs your function against multiple test cases using <code>torch.allcl
 <br>
 Anyone preparing for ML/AI engineering interviews at top tech companies, or anyone who wants to deeply understand how PyTorch operations work under the hood.
 </details>
+
+---
+
+## 🤝 Contributors
+
+Thanks to everyone who has contributed to TorchCode.
+
+<!-- readme: contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/duoan">
+                    <img src="https://avatars.githubusercontent.com/u/2378740?v=4" width="100;" alt="duoan"/>
+                    <br />
+                    <sub><b>duoan</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/Ando233">
+                    <img src="https://avatars.githubusercontent.com/u/74404658?v=4" width="100;" alt="Ando233"/>
+                    <br />
+                    <sub><b>Ando233</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/abhijitmjj">
+                    <img src="https://avatars.githubusercontent.com/u/22732909?v=4" width="100;" alt="abhijitmjj"/>
+                    <br />
+                    <sub><b>abhijitmjj</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/HareshKarnan">
+                    <img src="https://avatars.githubusercontent.com/u/5285984?v=4" width="100;" alt="HareshKarnan"/>
+                    <br />
+                    <sub><b>HareshKarnan</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/ThierryHJ">
+                    <img src="https://avatars.githubusercontent.com/u/51846529?v=4" width="100;" alt="ThierryHJ"/>
+                    <br />
+                    <sub><b>ThierryHJ</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
+<!-- readme: contributors -end -->
+
+Auto-generated from the [GitHub contributors graph](https://github.com/duoan/TorchCode/graphs/contributors) with avatars and GitHub usernames.
 
 ---
 
